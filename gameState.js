@@ -1,6 +1,9 @@
 // gameState: the actual state of the game
 // this is the main part
 
+// the only 3 functions that should be called from the outside here are makeGameState, playerAction_State, and tick
+// all others are for internal use
+
 const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(), playerScreens: makePlayerScreens(players)})
 // gives player a new command and returns the new state
 const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(playerCommands)})
@@ -13,13 +16,13 @@ const penalizePlayer_State = player => gameState => Object.assign({}, gameState,
 const applyAction_State = player => action => gameState => Object.assign({}, gameState, {playerScreens: Object.assign({}, gameState.playerScreens, {[player.id]: applyActionToScreen(action)(playerScreens[player.id])})})
 // called when a player takes an action
 // takes care of checking its whether anyone wanted it and awarding/taking away points
-// TODO check validity
+// TODO check validity of the action so players cant just send in random BS and crash everyone's game
 // returns the new state
 const playerAction_State = player => action => gameState => {
   let playerCommanded = gameState.players[playerCommandedForAction(playerCommands)(action)]
-  return applyActionOnState(action)(playerCommanded // apply the action regardless of if it was commanded
-    ? commandDoneOnState(playerCommanded)(gameState) // if someone was commanded, then replace their command and update scores
-    : penalizePlayerOnState(player)(gameState)) // otherwise, penalize the thoughtcrimer who did something without being told
+  return applyAction_State(action)(playerCommanded // apply the action regardless of if it was commanded
+    ? commandDone_State(playerCommanded)(gameState) // if someone was commanded, then replace their command and update scores
+    : penalizePlayer_State(player)(gameState)) // otherwise, penalize the thoughtcrimer who did something without being told
 }
 // check if you lost the game
 // ie, 2 ministries are doubleplusungood
@@ -34,4 +37,4 @@ const tickMinistries_State = tickTime => gameState => Object.assign({}, gameStat
 const possiblyDisappearPlayers_State = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
 // called periodically; just does a bunch of functions on the state and returns the new state
 // tickTime is so that we can easily edit how long a tick is without having to change everything
-const tick = tickTime => gameState => checkForGameLossState(tickMinistriesState(tickTime)(possiblyKickPlayersState(contentTick(tickTime)(gameState)))
+const tick = tickTime => gameState => checkForGameLoss_State(tickMinistries_State(tickTime)(possiblyKickPlayers_State(contentTick(tickTime)(gameState)))
