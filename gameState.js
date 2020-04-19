@@ -37,4 +37,4 @@ const tickMinistries_State = tickTime => gameState => Object.assign({}, gameStat
 const possiblyDisappearPlayers_State = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
 // called periodically; just does a bunch of functions on the state and returns the new state
 // tickTime is so that we can easily edit how long a tick is without having to change everything
-const tick = tickTime => gameState => checkForGameLoss_State(tickMinistries_State(tickTime)(possiblyKickPlayers_State(contentTick(tickTime)(gameState)))
+const tick = tickTime => gameState => checkForGameLoss_State(tickMinistries_State(tickTime)(possiblyDisappearPlayers_State(contentTick(tickTime)(gameState)))
