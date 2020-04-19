@@ -6,7 +6,7 @@
 
 const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(players), playerScreens: makePlayerScreens(players)})
 // gives player a new command and returns the new state
-const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(playerCommands)})
+const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(gameState)})
 // called once a command is finished; returns the new state
 // adds the right score to the ministries and gives a new command to player
 const commandDone_State = player => gameState => giveCommand_State(player)(Object.assign({}, gameState, {ministryScores: addCommandScore(gameState.playerCommands[player.id])(gameState.ministryScores)}))
