@@ -4,7 +4,9 @@
 // the only 3 functions that should be called from the outside here are makeGameState, playerAction_State, and tick
 // all others are for internal use
 
-const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(players), playerScreens: makePlayerScreens(players)})
+// generate game state using randomness from content.js
+// should only be called on the server
+const generateGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(players), playerScreens: makePlayerScreens(players)})
 // gives player a new command and returns the new state
 const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(gameState)})
 // called once a command is finished; returns the new state
