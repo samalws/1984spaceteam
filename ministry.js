@@ -1,5 +1,5 @@
 // enum of all the ministries
-const ministries = Object.freeze({miniluv: 0, minipax: 1, miniplenty: 2, minitrue: 3})
+const ministries = {miniluv: 0, minipax: 1, miniplenty: 2, minitrue: 3}
 // generate a ministryScores thing with all the scores set to 0
 const makeMinistryScores = () => ({[ministries.miniluv]: 0, [ministries.minipax]: 0, [ministries.miniplenty]: 0, [ministries.minitrue]: 0})
 // sets the score of a ministry, returning the new ministryScores
