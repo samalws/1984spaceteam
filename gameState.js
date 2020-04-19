@@ -9,3 +9,7 @@ const playerActionOnState = player => action => gameState => {
     ? commandDoneOnState(playerCommanded)(gameState) // if someone was commanded, then replace their command and update scores
     : penalizePlayerOnState(player)(gameState)) // otherwise, penalize the thoughtcrimer who did something without being told
 }
+const checkForGameLossState = gameState => (getDoubleplusUngood(gameState.ministries).length < 2) && gameState // jaden moment
+const tickMinistriesState = gameState => Object.assign({}, gameState, {ministries: tickMinistries(gameState.ministries)})
+const possiblyKickPlayersState = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntKickPlayer)})
+const tick = gameState => checkForGameLossState(tickMinistriesState(possiblyKickPlayersState(contentTick(gameState)))
