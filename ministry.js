@@ -18,3 +18,8 @@ const ministryDoubleplusUngoodLvl = 10
 const getUngoodMinistries = ministryScores => Object.keys(ministryScores).filter(x => ministryScores[x] < -ministryUngoodLvl || ministryScores[x] > ministryUngoodLvl)
 // ditto but for doubleplusungood
 const getDoubleplusUngoodMinistries = ministryScores => Object.keys(ministryScores).filter(x => ministryScores[x] < -ministryDoubleplusUngoodLvl || ministryScores[x] > ministryDoubleplusUngoodLvl)
+// ministry scores decrease rate per second
+ministriesDecreaseRate = .1
+// decrease all the ministry scores a bit, return the new ministries
+// CURRYING <3
+tickMinistryScores = tickTime => addMinistryScores([0,1,2,3].reduce((acc, n) => Object.assign(acc, {n: tickTime * ministriesDecreaseRate}), {}))
