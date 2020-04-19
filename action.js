@@ -7,3 +7,5 @@ const pipes = Object.freeze({miniluv: 0, minipax: 1, miniplenty: 2, minitrue: 3,
 const makeAction = paperId => pipe => ({paperId: paperId, pipe: pipe})
 // apply the action to the player's screen
 const applyActionToScreen = action => deletePaperFromScreen(action.paperId)
+// check if 2 actions are the same
+const actionsEqual = a => b => a.paperId == b.paperId && a.pipe == b.pipe
