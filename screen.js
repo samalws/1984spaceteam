@@ -2,6 +2,8 @@
 
 // jaden moment
 makeScreen = () => []
+// make screens for all the players
+makePlayerScreens = players => Object.keys(players).reduce((acc, id) => Object.assign(acc, {[id]: makeScreen()}), {})
 // add a paper to a screen, returning new screen
 addPaperToScreen = paper => screen => [...screen, paper]
 // delete a paper from screen, returning new screen
