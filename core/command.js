@@ -2,7 +2,7 @@
 
 // make a command given THOSE parameters
 // ministryAdds is like the type of argument you give to addMinistryScore
-const makeCommand = text => name => timeLimit => ministryAdds => ({text: text, name: name, timeLimit: timeLimit, ministryAdds: ministryAdds}) // jaden moment
+const makeCommand = text => action => timeLimit => ministryAdds => ({text: text, action: action, timeLimit: timeLimit, ministryAdds: ministryAdds}) // jaden moment
 // apply the ministryAdds to the ministry scores
 // CURRYING <3
 const addCommandScore = command => addMinistryScores(command.ministryAdds)
