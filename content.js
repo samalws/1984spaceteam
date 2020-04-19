@@ -2,7 +2,7 @@
 
 // TODO
 
-makePlayerCommands = players => ()
-makePlayerScreens = players => ()
-genNewCommandForPlayer = player => gameState => ()
-contentTick = tickTime => gameState => gameState
+const makePlayerCommands = players => ()
+const makePlayerScreens = players => ()
+const genNewCommandForPlayer = player => gameState => ()
+const contentTick = tickTime => gameState => gameState
