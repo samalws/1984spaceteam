@@ -11,5 +11,5 @@ const playerActionOnState = player => action => gameState => {
 }
 const checkForGameLossState = gameState => (getDoubleplusUngoodMinistries(gameState.ministries).length < 2) && gameState // jaden moment
 const tickMinistriesState = gameState => Object.assign({}, gameState, {ministries: tickMinistries(gameState.ministries)})
-const possiblyKickPlayersState = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntKickPlayer)})
+const possiblyDisappearPlayersState = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
 const tick = gameState => checkForGameLossState(tickMinistriesState(possiblyKickPlayersState(contentTick(gameState)))
