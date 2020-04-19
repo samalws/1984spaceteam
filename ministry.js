@@ -1,15 +1,15 @@
 // enum of all the ministries
-const ministry = Object.freeze({miniluv: 0, minipax: 1, miniplenty: 2, minitrue: 3})
+const ministries = Object.freeze({miniluv: 0, minipax: 1, miniplenty: 2, minitrue: 3})
 // generate a ministryScores thing with all the scores set to 0
-const makeMinistryScores = () => ({[ministry.miniluv]: 0, [ministry.minipax]: 0, [ministry.miniplenty]: 0, [ministry.minitrue]: 0})
+const makeMinistryScores = () => ({[ministries.miniluv]: 0, [ministries.minipax]: 0, [ministries.miniplenty]: 0, [ministries.minitrue]: 0})
 // sets the score of a ministry, returning the new ministryScores
 const setMinistryScore = ministryToSet => newScore => ministryScores => Object.assign({}, ministryScores, {[ministryToSet]: newScore})
 // add to the score of a ministry, returning the new ministryScores
 const addMinistryScore = ministryToAdd => toAdd => ministryScores => setMinistryScore(ministryToAdd)(scores[ministryToAdd]+toAdd)(ministryScores)
 // adds to the scores of multiple ministries, returning the new ministryScores
-// format of adds: {ministry.miniluv: 65, ministry.minipax: 6}
-// addMinistryScores({ministry.miniluv: 65, ministry.minipax: 6})(scores) is equivalent to:
-//   addMinistryScore(ministry.miniluv)(65)(addMinistryScore(ministry.minipax)(6)(scores))
+// format of adds: {ministries.miniluv: 65, ministries.minipax: 6}
+// addMinistryScores({ministries.miniluv: 65, ministries.minipax: 6})(scores) is equivalent to:
+//   addMinistryScore(ministries.miniluv)(65)(addMinistryScore(ministries.minipax)(6)(scores))
 const addMinistryScores = adds => ministryScores => Object.keys(adds).reduce((scores, key) => addMinistryScore(key)(adds[key])(scores), ministryScores) // add multiple scores in the format of like {miniplenty: 3, miniluv: 2}
 const ministryUngoodLvl = 5
 const ministryDoubleplusUngoodLvl = 10
