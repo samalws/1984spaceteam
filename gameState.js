@@ -1,15 +1,37 @@
+// gameState: the actual state of the game
+// this is the main part
+
 const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(), playerScreens: makePlayerScreens()})
-const giveCommandOnState = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(playerCommands)}) // give a player a new command
-const commandDoneOnState = player => gameState => giveCommandOnState(player)(Object.assign({}, gameState, {ministryScores: addCommandScore(gameState.playerCommands[player.id])(gameState.ministryScores)}))
-const penalizePlayerOnState = player => gameState => Object.assign({}, gameState, {players: Object.assign({}, gameState.players, {[player.id]: penalizePlayer(player)})})
-const applyActionOnState = player => action => gameState => Object.assign({}, gameState, {playerScreens: Object.assign({}, gameState.playerScreens, {[player.id]: applyActionToScreen(action)(playerScreens[player.id])})})
-const playerActionOnState = player => action => gameState => {
+// gives player a new command and returns the new state
+const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(playerCommands)})
+// called once a command is finished; returns the new state
+// adds the right score to the ministries and gives a new command to player
+const commandDone_State = player => gameState => giveCommand_State(player)(Object.assign({}, gameState, {ministryScores: addCommandScore(gameState.playerCommands[player.id])(gameState.ministryScores)}))
+// penalize a player who did an action they weren't supposed to (takes away loyalty point); returns the new state
+const penalizePlayer_State = player => gameState => Object.assign({}, gameState, {players: Object.assign({}, gameState.players, {[player.id]: penalizePlayer(player)})})
+// apply an action (ie, a player puts a paper into a pipe); returns the new state
+const applyAction_State = player => action => gameState => Object.assign({}, gameState, {playerScreens: Object.assign({}, gameState.playerScreens, {[player.id]: applyActionToScreen(action)(playerScreens[player.id])})})
+// called when a player takes an action
+// takes care of checking its whether anyone wanted it and awarding/taking away points
+// TODO check validity
+// returns the new state
+const playerAction_State = player => action => gameState => {
   let playerCommanded = gameState.players[playerCommandedForAction(playerCommands)(action)]
   return applyActionOnState(action)(playerCommanded // apply the action regardless of if it was commanded
     ? commandDoneOnState(playerCommanded)(gameState) // if someone was commanded, then replace their command and update scores
     : penalizePlayerOnState(player)(gameState)) // otherwise, penalize the thoughtcrimer who did something without being told
 }
-const checkForGameLossState = gameState => (getDoubleplusUngoodMinistries(gameState.ministries).length < 2) && gameState // jaden moment
-const tickMinistriesState = gameState => Object.assign({}, gameState, {ministries: tickMinistries(gameState.ministries)})
-const possiblyDisappearPlayersState = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
-const tick = gameState => checkForGameLossState(tickMinistriesState(possiblyKickPlayersState(contentTick(gameState)))
+// check if you lost the game
+// ie, 2 ministries are doubleplusungood
+// returns the game unchanged if you didn't lose the game
+// returns false if you did lose
+// the && is a jaden moment lmao, it returns the left side if left side is false, otherwise returns the right side, which is exactly what we need :)
+// learned about this from ROBLOX
+const checkForGameLoss_State = gameState => (getDoubleplusUngoodMinistries(gameState.ministries).length < 2) && gameState
+// calls tickMinistryScores on ministryScores, returns the new state
+const tickMinistries_State = tickTime => gameState => Object.assign({}, gameState, {ministryScores: tickMinistryScores(tickTime)(gameState.ministryScores)})
+// disappears (ie, deletes from players list) any players whose loyalty are too low; returns the new state
+const possiblyDisappearPlayers_State = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
+// called periodically; just does a bunch of functions on the state and returns the new state
+// tickTime is so that we can easily edit how long a tick is without having to change everything
+const tick = tickTime => gameState => checkForGameLossState(tickMinistriesState(tickTime)(possiblyKickPlayersState(contentTick(tickTime)(gameState)))
