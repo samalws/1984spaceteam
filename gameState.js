@@ -1,7 +1,7 @@
 // gameState: the actual state of the game
 // this is the main part
 
-const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(), playerScreens: makePlayerScreens()})
+const makeGameState = players => ({players: players, ministryScores: makeMinistryScores(), playerCommands: makePlayerCommands(), playerScreens: makePlayerScreens(players)})
 // gives player a new command and returns the new state
 const giveCommand_State = player => gameState => Object.assign({}, gameState, {playerCommands: genNewCommandForPlayer(player)(playerCommands)})
 // called once a command is finished; returns the new state
