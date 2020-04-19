@@ -3,5 +3,7 @@ const makeMinistryScores = () => ({[ministry.miniluv]: 0, [ministry.minipax]: 0,
 const setMinistryScore = ministryToSet => newScore => ministryScores => Object.assign({}, ministryScores, {[ministryToSet]: newScore}) // update a score without changing the original one
 const addMinistryScore = ministryToAdd => toAdd => ministryScores => setMinistryScore(ministryToAdd)(scores[ministryToAdd]+toAdd)(ministryScores) // add a score without changing the original one
 const addMinistryScores = adds => ministryScores => Object.keys(adds).reduce((scores, key) => addMinistryScore(key)(adds[key])(scores), ministryScores) // add multiple scores in the format of like {miniplenty: 3, miniluv: 2}
-const ministryDangerLvl = 5
-const getDangerous = ministryToCheck => Object.keys(ministryToCheck).filter(x => ministryToCheck[x] < -ministryDangerLvl || ministryToCheck[x] > ministryDangerLvl) // get which ones are DANGEROUS
+const ungoodLvl = 5
+const doubleplusUngoodLvl = 10
+const getUngood = ministryToCheck => Object.keys(ministryToCheck).filter(x => ministryToCheck[x] < -ungoodLvl || ministryToCheck[x] > ungoodLvl)
+const getDoubleplusUngood = ministryToCheck => Object.keys(ministryToCheck).filter(x => ministryToCheck[x] < -doubleplusUngoodLvl || ministryToCheck[x] > doubleplusUngoodLvl)
