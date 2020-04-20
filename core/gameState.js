@@ -15,14 +15,14 @@ const commandDone_State = player => gameState => giveCommand_State(player)(Objec
 // penalize a player who did an action they weren't supposed to (takes away loyalty point); returns the new state
 const penalizePlayer_State = player => gameState => Object.assign({}, gameState, {players: Object.assign({}, gameState.players, {[player.id]: penalizePlayer(player)})})
 // apply an action (ie, a player puts a paper into a pipe); returns the new state
-const applyAction_State = player => action => gameState => Object.assign({}, gameState, {playerScreens: Object.assign({}, gameState.playerScreens, {[player.id]: applyActionToScreen(action)(playerScreens[player.id])})})
+const applyAction_State = playerId => action => gameState => Object.assign({}, gameState, {playerScreens: Object.assign({}, gameState.playerScreens, {[playerId]: applyActionToScreen(action)(playerScreens[playerId])})})
 // called when a player takes an action
 // takes care of checking its whether anyone wanted it and awarding/taking away points
 // TODO check validity of the action so players cant just send in random BS and crash everyone's game
 // returns the new state
 const playerAction_State = player => action => gameState => {
   let playerCommanded = gameState.players[playerCommandedForAction(playerCommands)(action)]
-  return applyAction_State(action)(playerCommanded // apply the action regardless of if it was commanded
+  return applyAction_State(player.id)(action)(playerCommanded // apply the action regardless of if it was commanded
     ? commandDone_State(playerCommanded)(gameState) // if someone was commanded, then replace their command and update scores
     : penalizePlayer_State(player)(gameState)) // otherwise, penalize the thoughtcrimer who did something without being told
 }

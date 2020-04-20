@@ -6,3 +6,4 @@
 
 const genNewCommandForPlayer = player => gameState => makeCommand("")({})(0)({})
 const contentTick = tickTime => gameState => gameState
+cont genUsername = () => "ME"

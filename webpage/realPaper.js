@@ -1,7 +1,9 @@
 // connection between real html paper and the internal paper object
 
-// create html paper id from paper object id
+// create real html paper id from paper object id
 const makeRealPaperId = paper => "paper" + paper.id
+// get paper object id from real html paper
+const makeObjectPaperId = realPaper => realPaper.id.substr(5)
 // create real html paper from paper object
 // if one already exists, does nothing
 const showRealPaper = paper => !document.getElementById(makeRealPaperId(paper)) && addCommand(makeRealPaperId(paper), paper.words.join(" "))
@@ -17,3 +19,5 @@ const changePaperBasedOnRealPaper = realPaper => oldPaper => [...realPaper.child
             : (censorPaperWord(elemNum)(t[0]), t[1] + 1)))) // only possible last option is censored
     (oldPaper, 0 /* number within list of current element */)
   )[0]
+// called when a paper is dragged into a pipe
+const makeActionFromRealPaper = realPaper => papers => pipeId => makeAction(changePaperBasedOnRealPaper(realPaper)(papers[makeObjectPaperId(realPaper.id)]))(pipes[pipeId])
