@@ -5,7 +5,7 @@ const makeMinistryScores = () => ({[ministries.miniluv]: 0, [ministries.minipax]
 // sets the score of a ministry, returning the new ministryScores
 const setMinistryScore = ministryToSet => newScore => ministryScores => Object.assign({}, ministryScores, {[ministryToSet]: newScore})
 // add to the score of a ministry, returning the new ministryScores
-const addMinistryScore = ministryToAdd => toAdd => ministryScores => setMinistryScore(ministryToAdd)(scores[ministryToAdd]+toAdd)(ministryScores)
+const addMinistryScore = ministryToAdd => toAdd => ministryScores => setMinistryScore(ministryToAdd)(ministryScores[ministryToAdd]+toAdd)(ministryScores)
 // adds to the scores of multiple ministries, returning the new ministryScores
 // format of adds: {ministries.miniluv: 65, ministries.minipax: 6}
 // addMinistryScores({ministries.miniluv: 65, ministries.minipax: 6})(scores) is equivalent to:
@@ -22,4 +22,4 @@ const getDoubleplusUngoodMinistries = ministryScores => Object.keys(ministryScor
 ministriesDecreaseRate = .1
 // decrease all the ministry scores a bit, return the new ministries
 // CURRYING <3
-tickMinistryScores = tickTime => addMinistryScores([0,1,2,3].reduce((acc, n) => Object.assign(acc, {n: tickTime * ministriesDecreaseRate}), {}))
+tickMinistryScores = tickTime => addMinistryScores([0,1,2,3].reduce((acc, n) => Object.assign(acc, {[n]: tickTime * ministriesDecreaseRate}), {}))

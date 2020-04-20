@@ -25,4 +25,4 @@ function makeWebsocket(playerName, stateReceived) {
   })
   client.connect('ws://localhost:880/', 'echo-protocol')
   return action => connection.connected ? connection.sendUTF(JSON.stringify(action)) : alert("AAAAAAA") // kristina moment
-})
+}

@@ -32,11 +32,11 @@ const playerAction_State = player => action => gameState => {
 // returns false if you did lose
 // the && is a jaden moment lmao, it returns the left side if left side is false, otherwise returns the right side, which is exactly what we need :)
 // learned about this from ROBLOX
-const checkForGameLoss_State = gameState => (getDoubleplusUngoodMinistries(gameState.ministries).length < 2) && gameState
+const checkForGameLoss_State = gameState => (getDoubleplusUngoodMinistries(gameState.ministryScores).length < 2) && gameState
 // calls tickMinistryScores on ministryScores, returns the new state
 const tickMinistries_State = tickTime => gameState => Object.assign({}, gameState, {ministryScores: tickMinistryScores(tickTime)(gameState.ministryScores)})
 // disappears (ie, deletes from players list) any players whose loyalty are too low; returns the new state
-const possiblyDisappearPlayers_State = gameState => Object.assign({}, gameState, {players: gameState.players.filter(shouldntDisappearPlayer)})
+const possiblyDisappearPlayers_State = gameState => Object.assign({}, gameState, {players: Object.keys(gameState.players).reduce((acc, plr) => shouldDisappearPlayer(plr) ? acc : Object.assign(acc, {[plr.id]: plr}), {})})
 // called periodically; just does a bunch of functions on the state and returns the new state
 // tickTime is so that we can easily edit how long a tick is without having to change everything
 const tick = tickTime => gameState => checkForGameLoss_State(tickMinistries_State(tickTime)(possiblyDisappearPlayers_State(contentTick(tickTime)(gameState))))

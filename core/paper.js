@@ -24,7 +24,7 @@ changePaperWord = changePaperElem("wordsChanged")
 papersEqual = a => b => {
   if (a.id != b.id) return false
   for (let i = 0; i < a.words.length; i++)
-    if (a.wordsCensored[i] != b.wordsCensored[i]) || a.wordsChanged[i].toLowerCase() != b.wordsChanged[i].toLowerCase())
+    if (a.wordsCensored[i] != b.wordsCensored[i] || a.wordsChanged[i].toLowerCase() != b.wordsChanged[i].toLowerCase())
       return false
   return true
 }
